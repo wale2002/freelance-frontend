@@ -1,4 +1,274 @@
-// // src/pages/FreelancerProfilePage.tsx (new page for viewing freelancer profiles)
+// // // src/pages/FreelancerProfilePage.tsx (new page for viewing freelancer profiles)
+// // import { useEffect, useState } from "react";
+// // import { useParams, useNavigate } from "react-router-dom";
+// // import { getUserProfile } from "@/lib/api";
+// // import { Header } from "@/components/Header";
+// // import { Sidebar } from "@/components/Sidebar";
+// // import { Button } from "@/components/ui/button";
+// // import { Badge } from "@/components/ui/badge";
+// // import {
+// //   Card,
+// //   CardContent,
+// //   CardDescription,
+// //   CardFooter,
+// //   CardHeader,
+// //   CardTitle,
+// // } from "@/components/ui/card";
+// // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+// // import { FileImage, FileText, Download } from "lucide-react";
+// // import { toast } from "sonner";
+// // import { formatDistanceToNow } from "date-fns";
+
+// // interface PortfolioItem {
+// //   _id: string;
+// //   images: Array<{ url: string; originalName?: string }>;
+// //   files: Array<{ url: string; originalName?: string }>;
+// //   createdAt: string;
+// // }
+
+// // interface UserProfile {
+// //   _id: string;
+// //   name: string;
+// //   bio?: string;
+// //   experience?: string;
+// //   hourlyRate?: number;
+// //   location?: string;
+// //   skills: string[];
+// //   portfolio: PortfolioItem[];
+// //   profileImage?: string;
+// //   createdAt: string;
+// // }
+
+// // export default function FreelancerProfilePage() {
+// //   const { userId } = useParams<{ userId: string }>();
+// //   const navigate = useNavigate();
+// //   const [profile, setProfile] = useState<UserProfile | null>(null);
+// //   const [loading, setLoading] = useState(true);
+// //   const [error, setError] = useState<string | null>(null);
+
+// //   useEffect(() => {
+// //     if (!userId) {
+// //       navigate("/chats");
+// //       return;
+// //     }
+
+// //     const fetchProfile = async () => {
+// //       try {
+// //         setLoading(true);
+// //         const response = await getUserProfile(userId);
+// //         if (response.data.success && response.data.data) {
+// //           setProfile(response.data.data);
+// //         } else {
+// //           setError("Failed to load profile");
+// //         }
+// //       } catch (err) {
+// //         setError("Failed to load profile");
+// //         toast.error("Failed to load freelancer profile");
+// //       } finally {
+// //         setLoading(false);
+// //       }
+// //     };
+
+// //     fetchProfile();
+// //   }, [userId, navigate]);
+
+// //   if (loading) {
+// //     return (
+// //       <div className="min-h-screen flex flex-col">
+// //         <Header />
+// //         <div className="flex flex-1 items-center justify-center">
+// //           <p>Loading profile...</p>
+// //         </div>
+// //       </div>
+// //     );
+// //   }
+
+// //   if (error || !profile) {
+// //     return (
+// //       <div className="min-h-screen flex flex-col">
+// //         <Header />
+// //         <div className="flex flex-1 items-center justify-center">
+// //           <p className="text-destructive">{error || "Profile not found"}</p>
+// //         </div>
+// //       </div>
+// //     );
+// //   }
+
+// //   const handleBackToChats = () => {
+// //     navigate("/chats");
+// //   };
+
+// //   return (
+// //     <div className="min-h-screen flex flex-col">
+// //       <Header />
+// //       <div className="flex flex-1">
+// //         <Sidebar />
+// //         <main className="flex-1 p-6 overflow-auto">
+// //           <div className="max-w-4xl mx-auto">
+// //             <Button
+// //               variant="ghost"
+// //               onClick={handleBackToChats}
+// //               className="mb-6"
+// //             >
+// //               ← Back to Chats
+// //             </Button>
+
+// //             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+// //               {/* Profile Information */}
+// //               <Card>
+// //                 <CardHeader className="flex-row items-center space-y-0">
+// //                   <Avatar className="w-16 h-16">
+// //                     <AvatarImage src={profile.profileImage} />
+// //                     <AvatarFallback className="w-16 h-16 text-primary-foreground bg-primary text-2xl">
+// //                       {profile.name.charAt(0).toUpperCase()}
+// //                     </AvatarFallback>
+// //                   </Avatar>
+// //                   <div className="ml-4">
+// //                     <CardTitle className="text-2xl">{profile.name}</CardTitle>
+// //                     <CardDescription>Freelancer Profile</CardDescription>
+// //                   </div>
+// //                 </CardHeader>
+// //                 <CardContent className="space-y-4">
+// //                   {profile.bio && (
+// //                     <div className="space-y-1">
+// //                       <span className="font-medium">Bio</span>
+// //                       <p className="text-sm text-muted-foreground">
+// //                         {profile.bio}
+// //                       </p>
+// //                     </div>
+// //                   )}
+// //                   {profile.location && (
+// //                     <div className="space-y-1">
+// //                       <span className="font-medium">Location</span>
+// //                       <p className="text-sm">{profile.location}</p>
+// //                     </div>
+// //                   )}
+// //                   {profile.hourlyRate && (
+// //                     <div className="space-y-1">
+// //                       <span className="font-medium">Hourly Rate</span>
+// //                       <p className="text-sm">${profile.hourlyRate}/hr</p>
+// //                     </div>
+// //                   )}
+// //                   {profile.skills.length > 0 && (
+// //                     <div className="space-y-1">
+// //                       <span className="font-medium">Skills</span>
+// //                       <div className="flex flex-wrap gap-2 mt-2">
+// //                         {profile.skills.map((skill) => (
+// //                           <Badge
+// //                             key={skill}
+// //                             variant="secondary"
+// //                             className="text-xs"
+// //                           >
+// //                             {skill}
+// //                           </Badge>
+// //                         ))}
+// //                       </div>
+// //                     </div>
+// //                   )}
+// //                   {profile.experience && (
+// //                     <div className="space-y-1">
+// //                       <span className="font-medium">Experience</span>
+// //                       <p className="text-sm text-muted-foreground">
+// //                         {profile.experience}
+// //                       </p>
+// //                     </div>
+// //                   )}
+// //                   <div className="text-xs text-muted-foreground pt-4 border-t">
+// //                     Joined{" "}
+// //                     {formatDistanceToNow(new Date(profile.createdAt), {
+// //                       addSuffix: true,
+// //                     })}
+// //                   </div>
+// //                 </CardContent>
+// //                 <CardFooter className="pt-0">
+// //                   <Button className="w-full" onClick={handleBackToChats}>
+// //                     Start Conversation
+// //                   </Button>
+// //                 </CardFooter>
+// //               </Card>
+
+// //               {/* Portfolio */}
+// //               <div>
+// //                 <Card>
+// //                   <CardHeader>
+// //                     <CardTitle>Portfolio</CardTitle>
+// //                     <CardDescription>Showcase of work</CardDescription>
+// //                   </CardHeader>
+// //                   <CardContent>
+// //                     {profile.portfolio && profile.portfolio.length > 0 ? (
+// //                       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+// //                         {profile.portfolio.map((item) => (
+// //                           <Card key={item._id}>
+// //                             <CardContent className="p-4 space-y-3">
+// //                               {item.images && item.images.length > 0 ? (
+// //                                 <div className="space-y-2">
+// //                                   {item.images.map((img, i) => (
+// //                                     <div key={i} className="space-y-1">
+// //                                       <img
+// //                                         src={img.url}
+// //                                         alt={
+// //                                           img.originalName ||
+// //                                           `Portfolio image ${i + 1}`
+// //                                         }
+// //                                         className="w-full h-32 object-cover rounded"
+// //                                       />
+// //                                       <p className="text-xs text-muted-foreground truncate">
+// //                                         {img.originalName || `Image ${i + 1}`}
+// //                                       </p>
+// //                                     </div>
+// //                                   ))}
+// //                                 </div>
+// //                               ) : item.files && item.files.length > 0 ? (
+// //                                 <div className="space-y-2">
+// //                                   {item.files.map((file, i) => (
+// //                                     <a
+// //                                       key={i}
+// //                                       href={file.url}
+// //                                       target="_blank"
+// //                                       rel="noopener noreferrer"
+// //                                       download={file.originalName}
+// //                                       className="block p-3 bg-muted rounded text-center hover:bg-muted-foreground/50 transition-colors flex items-center justify-center gap-2"
+// //                                     >
+// //                                       <FileText className="w-5 h-5 text-muted-foreground" />
+// //                                       <span className="text-sm truncate max-w-[150px]">
+// //                                         {file.originalName || `File ${i + 1}`}
+// //                                       </span>
+// //                                       <Download className="w-4 h-4" />
+// //                                     </a>
+// //                                   ))}
+// //                                 </div>
+// //                               ) : (
+// //                                 <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
+// //                                   <FileImage className="w-12 h-12 text-muted-foreground" />
+// //                                 </div>
+// //                               )}
+// //                               <p className="text-xs text-muted-foreground">
+// //                                 Added{" "}
+// //                                 {formatDistanceToNow(new Date(item.createdAt), {
+// //                                   addSuffix: true,
+// //                                 })}
+// //                               </p>
+// //                             </CardContent>
+// //                           </Card>
+// //                         ))}
+// //                       </div>
+// //                     ) : (
+// //                       <div className="py-12 text-center text-muted-foreground">
+// //                         No portfolio items yet.
+// //                       </div>
+// //                     )}
+// //                   </CardContent>
+// //                 </Card>
+// //               </div>
+// //             </div>
+// //           </div>
+// //         </main>
+// //       </div>
+// //     </div>
+// //   );
+// // }
+
+// // src/pages/FreelancerProfilePage.tsx (Updated: Added safeguards for portfolio array and createdAt to prevent runtime errors)
 // import { useEffect, useState } from "react";
 // import { useParams, useNavigate } from "react-router-dom";
 // import { getUserProfile } from "@/lib/api";
@@ -21,9 +291,9 @@
 
 // interface PortfolioItem {
 //   _id: string;
-//   images: Array<{ url: string; originalName?: string }>;
-//   files: Array<{ url: string; originalName?: string }>;
-//   createdAt: string;
+//   images?: Array<{ url: string; originalName?: string }>; // Made optional
+//   files?: Array<{ url: string; originalName?: string }>; // Made optional
+//   createdAt?: string; // Made optional
 // }
 
 // interface UserProfile {
@@ -34,9 +304,10 @@
 //   hourlyRate?: number;
 //   location?: string;
 //   skills: string[];
-//   portfolio: PortfolioItem[];
+//   portfolio?: PortfolioItem[]; // Made optional
 //   profileImage?: string;
-//   createdAt: string;
+//   createdAt?: string; // Made optional
+//   role?: string;
 // }
 
 // export default function FreelancerProfilePage() {
@@ -55,15 +326,18 @@
 //     const fetchProfile = async () => {
 //       try {
 //         setLoading(true);
+//         setError(null);
 //         const response = await getUserProfile(userId);
 //         if (response.data.success && response.data.data) {
 //           setProfile(response.data.data);
 //         } else {
-//           setError("Failed to load profile");
+//           setError(response.data.message || "Failed to load profile");
 //         }
-//       } catch (err) {
-//         setError("Failed to load profile");
-//         toast.error("Failed to load freelancer profile");
+//       } catch (err: any) {
+//         const errorMessage =
+//           err.response?.data?.message || "Failed to load profile";
+//         setError(errorMessage);
+//         toast.error(errorMessage);
 //       } finally {
 //         setLoading(false);
 //       }
@@ -88,7 +362,14 @@
 //       <div className="min-h-screen flex flex-col">
 //         <Header />
 //         <div className="flex flex-1 items-center justify-center">
-//           <p className="text-destructive">{error || "Profile not found"}</p>
+//           <div className="text-center">
+//             <p className="text-destructive mb-2">
+//               {error || "Profile not found"}
+//             </p>
+//             <Button onClick={() => navigate(-1)} variant="outline">
+//               Go Back
+//             </Button>
+//           </div>
 //         </div>
 //       </div>
 //     );
@@ -97,6 +378,11 @@
 //   const handleBackToChats = () => {
 //     navigate("/chats");
 //   };
+
+//   // Safeguard for portfolio: Ensure it's an array
+//   const safePortfolio = Array.isArray(profile.portfolio)
+//     ? profile.portfolio
+//     : [];
 
 //   return (
 //     <div className="min-h-screen flex flex-col">
@@ -116,7 +402,9 @@
 //             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 //               {/* Profile Information */}
 //               <Card>
-//                 <CardHeader className="flex-row items-center space-y-0">
+//                 <CardHeader className="flex flex-row items-center space-y-0">
+//                   {" "}
+//                   {/* Explicit flex-row */}
 //                   <Avatar className="w-16 h-16">
 //                     <AvatarImage src={profile.profileImage} />
 //                     <AvatarFallback className="w-16 h-16 text-primary-foreground bg-primary text-2xl">
@@ -149,22 +437,23 @@
 //                       <p className="text-sm">${profile.hourlyRate}/hr</p>
 //                     </div>
 //                   )}
-//                   {profile.skills.length > 0 && (
-//                     <div className="space-y-1">
-//                       <span className="font-medium">Skills</span>
-//                       <div className="flex flex-wrap gap-2 mt-2">
-//                         {profile.skills.map((skill) => (
-//                           <Badge
-//                             key={skill}
-//                             variant="secondary"
-//                             className="text-xs"
-//                           >
-//                             {skill}
-//                           </Badge>
-//                         ))}
+//                   {Array.isArray(profile.skills) &&
+//                     profile.skills.length > 0 && (
+//                       <div className="space-y-1">
+//                         <span className="font-medium">Skills</span>
+//                         <div className="flex flex-wrap gap-2 mt-2">
+//                           {profile.skills.map((skill) => (
+//                             <Badge
+//                               key={skill}
+//                               variant="secondary"
+//                               className="text-xs"
+//                             >
+//                               {skill}
+//                             </Badge>
+//                           ))}
+//                         </div>
 //                       </div>
-//                     </div>
-//                   )}
+//                     )}
 //                   {profile.experience && (
 //                     <div className="space-y-1">
 //                       <span className="font-medium">Experience</span>
@@ -173,12 +462,14 @@
 //                       </p>
 //                     </div>
 //                   )}
-//                   <div className="text-xs text-muted-foreground pt-4 border-t">
-//                     Joined{" "}
-//                     {formatDistanceToNow(new Date(profile.createdAt), {
-//                       addSuffix: true,
-//                     })}
-//                   </div>
+//                   {profile.createdAt && (
+//                     <div className="text-xs text-muted-foreground pt-4 border-t">
+//                       Joined{" "}
+//                       {formatDistanceToNow(new Date(profile.createdAt), {
+//                         addSuffix: true,
+//                       })}
+//                     </div>
+//                   )}
 //                 </CardContent>
 //                 <CardFooter className="pt-0">
 //                   <Button className="w-full" onClick={handleBackToChats}>
@@ -195,17 +486,21 @@
 //                     <CardDescription>Showcase of work</CardDescription>
 //                   </CardHeader>
 //                   <CardContent>
-//                     {profile.portfolio && profile.portfolio.length > 0 ? (
+//                     {safePortfolio.length > 0 ? (
 //                       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-//                         {profile.portfolio.map((item) => (
-//                           <Card key={item._id}>
+//                         {safePortfolio.map((item) => (
+//                           <Card key={item._id || Math.random()}>
+//                             {" "}
+//                             {/* Fallback key if _id missing */}
 //                             <CardContent className="p-4 space-y-3">
-//                               {item.images && item.images.length > 0 ? (
+//                               {item.images &&
+//                               Array.isArray(item.images) &&
+//                               item.images.length > 0 ? (
 //                                 <div className="space-y-2">
 //                                   {item.images.map((img, i) => (
 //                                     <div key={i} className="space-y-1">
 //                                       <img
-//                                         src={img.url}
+//                                         src={img.url || ""}
 //                                         alt={
 //                                           img.originalName ||
 //                                           `Portfolio image ${i + 1}`
@@ -218,12 +513,14 @@
 //                                     </div>
 //                                   ))}
 //                                 </div>
-//                               ) : item.files && item.files.length > 0 ? (
+//                               ) : item.files &&
+//                                 Array.isArray(item.files) &&
+//                                 item.files.length > 0 ? (
 //                                 <div className="space-y-2">
 //                                   {item.files.map((file, i) => (
 //                                     <a
 //                                       key={i}
-//                                       href={file.url}
+//                                       href={file.url || "#"}
 //                                       target="_blank"
 //                                       rel="noopener noreferrer"
 //                                       download={file.originalName}
@@ -242,12 +539,19 @@
 //                                   <FileImage className="w-12 h-12 text-muted-foreground" />
 //                                 </div>
 //                               )}
-//                               <p className="text-xs text-muted-foreground">
-//                                 Added{" "}
-//                                 {formatDistanceToNow(new Date(item.createdAt), {
-//                                   addSuffix: true,
-//                                 })}
-//                               </p>
+//                               {item.createdAt ? (
+//                                 <p className="text-xs text-muted-foreground">
+//                                   Added{" "}
+//                                   {formatDistanceToNow(
+//                                     new Date(item.createdAt),
+//                                     { addSuffix: true }
+//                                   )}
+//                                 </p>
+//                               ) : (
+//                                 <p className="text-xs text-muted-foreground">
+//                                   Date not available
+//                                 </p>
+//                               )}
 //                             </CardContent>
 //                           </Card>
 //                         ))}
@@ -268,7 +572,7 @@
 //   );
 // }
 
-// src/pages/FreelancerProfilePage.tsx (Updated: Added safeguards for portfolio array and createdAt to prevent runtime errors)
+// src/pages/FreelancerProfilePage.tsx (Updated: Added display for pastExperiences, social links, and safeguards)
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getUserProfile } from "@/lib/api";
@@ -285,9 +589,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FileImage, FileText, Download } from "lucide-react";
+import {
+  FileImage,
+  FileText,
+  Download,
+  Github,
+  Linkedin,
+  Globe,
+} from "lucide-react";
 import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
+import { User } from "@/types"; // Assuming types are in a separate file
 
 interface PortfolioItem {
   _id: string;
@@ -296,24 +608,10 @@ interface PortfolioItem {
   createdAt?: string; // Made optional
 }
 
-interface UserProfile {
-  _id: string;
-  name: string;
-  bio?: string;
-  experience?: string;
-  hourlyRate?: number;
-  location?: string;
-  skills: string[];
-  portfolio?: PortfolioItem[]; // Made optional
-  profileImage?: string;
-  createdAt?: string; // Made optional
-  role?: string;
-}
-
 export default function FreelancerProfilePage() {
   const { userId } = useParams<{ userId: string }>();
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profile, setProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -384,6 +682,11 @@ export default function FreelancerProfilePage() {
     ? profile.portfolio
     : [];
 
+  // Safeguard for pastExperiences: Ensure it's an array
+  const safePastExperiences = Array.isArray(profile.pastExperiences)
+    ? profile.pastExperiences
+    : [];
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -401,82 +704,155 @@ export default function FreelancerProfilePage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Profile Information */}
-              <Card>
-                <CardHeader className="flex flex-row items-center space-y-0">
-                  {" "}
-                  {/* Explicit flex-row */}
-                  <Avatar className="w-16 h-16">
-                    <AvatarImage src={profile.profileImage} />
-                    <AvatarFallback className="w-16 h-16 text-primary-foreground bg-primary text-2xl">
-                      {profile.name.charAt(0).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="ml-4">
-                    <CardTitle className="text-2xl">{profile.name}</CardTitle>
-                    <CardDescription>Freelancer Profile</CardDescription>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {profile.bio && (
-                    <div className="space-y-1">
-                      <span className="font-medium">Bio</span>
-                      <p className="text-sm text-muted-foreground">
-                        {profile.bio}
-                      </p>
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader className="flex flex-row items-center space-y-0">
+                    {" "}
+                    {/* Explicit flex-row */}
+                    <Avatar className="w-16 h-16">
+                      <AvatarImage src={profile.profileImage} />
+                      <AvatarFallback className="w-16 h-16 text-primary-foreground bg-primary text-2xl">
+                        {profile.name.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="ml-4">
+                      <CardTitle className="text-2xl">{profile.name}</CardTitle>
+                      <CardDescription>Freelancer Profile</CardDescription>
                     </div>
-                  )}
-                  {profile.location && (
-                    <div className="space-y-1">
-                      <span className="font-medium">Location</span>
-                      <p className="text-sm">{profile.location}</p>
-                    </div>
-                  )}
-                  {profile.hourlyRate && (
-                    <div className="space-y-1">
-                      <span className="font-medium">Hourly Rate</span>
-                      <p className="text-sm">${profile.hourlyRate}/hr</p>
-                    </div>
-                  )}
-                  {Array.isArray(profile.skills) &&
-                    profile.skills.length > 0 && (
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {profile.bio && (
                       <div className="space-y-1">
-                        <span className="font-medium">Skills</span>
-                        <div className="flex flex-wrap gap-2 mt-2">
-                          {profile.skills.map((skill) => (
-                            <Badge
-                              key={skill}
-                              variant="secondary"
-                              className="text-xs"
+                        <span className="font-medium">Bio</span>
+                        <p className="text-sm text-muted-foreground">
+                          {profile.bio}
+                        </p>
+                      </div>
+                    )}
+                    {profile.location && (
+                      <div className="space-y-1">
+                        <span className="font-medium">Location</span>
+                        <p className="text-sm">{profile.location}</p>
+                      </div>
+                    )}
+                    {profile.hourlyRate && (
+                      <div className="space-y-1">
+                        <span className="font-medium">Hourly Rate</span>
+                        <p className="text-sm">${profile.hourlyRate}/hr</p>
+                      </div>
+                    )}
+                    {Array.isArray(profile.skills) &&
+                      profile.skills.length > 0 && (
+                        <div className="space-y-1">
+                          <span className="font-medium">Skills</span>
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            {profile.skills.map((skill) => (
+                              <Badge
+                                key={skill}
+                                variant="secondary"
+                                className="text-xs"
+                              >
+                                {skill}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    {profile.experience && (
+                      <div className="space-y-1">
+                        <span className="font-medium">Experience</span>
+                        <p className="text-sm text-muted-foreground">
+                          {profile.experience}
+                        </p>
+                      </div>
+                    )}
+                    {/* Social Links */}
+                    {(profile.githubProfile ||
+                      profile.linkedinProfile ||
+                      profile.portfolioWebsite) && (
+                      <div className="space-y-1 pt-4 border-t">
+                        <span className="font-medium">Social Links</span>
+                        <div className="space-y-2 mt-2">
+                          {profile.githubProfile && (
+                            <a
+                              href={profile.githubProfile}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 text-sm text-blue-600 hover:underline"
                             >
-                              {skill}
-                            </Badge>
-                          ))}
+                              <Github className="w-4 h-4" />
+                              GitHub
+                            </a>
+                          )}
+                          {profile.linkedinProfile && (
+                            <a
+                              href={profile.linkedinProfile}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 text-sm text-blue-600 hover:underline"
+                            >
+                              <Linkedin className="w-4 h-4" />
+                              LinkedIn
+                            </a>
+                          )}
+                          {profile.portfolioWebsite && (
+                            <a
+                              href={profile.portfolioWebsite}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 text-sm text-blue-600 hover:underline"
+                            >
+                              <Globe className="w-4 h-4" />
+                              Portfolio Website
+                            </a>
+                          )}
                         </div>
                       </div>
                     )}
-                  {profile.experience && (
-                    <div className="space-y-1">
-                      <span className="font-medium">Experience</span>
-                      <p className="text-sm text-muted-foreground">
-                        {profile.experience}
-                      </p>
-                    </div>
-                  )}
-                  {profile.createdAt && (
-                    <div className="text-xs text-muted-foreground pt-4 border-t">
-                      Joined{" "}
-                      {formatDistanceToNow(new Date(profile.createdAt), {
-                        addSuffix: true,
-                      })}
-                    </div>
-                  )}
-                </CardContent>
-                <CardFooter className="pt-0">
-                  <Button className="w-full" onClick={handleBackToChats}>
-                    Start Conversation
-                  </Button>
-                </CardFooter>
-              </Card>
+                    {profile.createdAt && (
+                      <div className="text-xs text-muted-foreground pt-4 border-t">
+                        Joined{" "}
+                        {formatDistanceToNow(new Date(profile.createdAt), {
+                          addSuffix: true,
+                        })}
+                      </div>
+                    )}
+                  </CardContent>
+                  <CardFooter className="pt-0">
+                    <Button className="w-full" onClick={handleBackToChats}>
+                      Start Conversation
+                    </Button>
+                  </CardFooter>
+                </Card>
+
+                {/* Past Experiences */}
+                {safePastExperiences.length > 0 && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Past Experiences</CardTitle>
+                      <CardDescription>Professional history</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {safePastExperiences.map((exp, index) => (
+                        <div
+                          key={exp._id || index}
+                          className="space-y-1 border-b pb-3 last:border-b-0"
+                        >
+                          <div className="flex justify-between">
+                            <span className="font-medium">{exp.company}</span>
+                            <span className="text-sm text-muted-foreground">
+                              {exp.duration}
+                            </span>
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            {exp.description}
+                          </p>
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
 
               {/* Portfolio */}
               <div>

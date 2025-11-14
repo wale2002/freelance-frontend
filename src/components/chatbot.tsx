@@ -909,7 +909,6 @@
 
 // export { Chatbot };
 
-
 // components/chatbot.tsx (Updated: Auth integration, greeting fetch, suggestedNextStep handling, keyDown fix)
 import * as React from "react";
 import { forwardRef, useImperativeHandle, useEffect } from "react";
@@ -991,7 +990,8 @@ const Chatbot = forwardRef<ChatbotRef>((_props, ref) => {
           setMessages([
             {
               id: Date.now().toString(),
-              content: "Hi! I'm Feranmi, your Freelance Match guide. Ask about proposals or gigs! 😊",
+              content:
+                "Hi! I'm Feranmi, your Freelance Match guide. Ask about proposals or gigs! 😊",
               sender: "bot",
               timestamp: new Date(),
             },
@@ -1095,7 +1095,9 @@ const Chatbot = forwardRef<ChatbotRef>((_props, ref) => {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Avatar className="h-8 w-8">
-                <AvatarImage src={user?.profileImage || "/feranmi-avatar.png"} />
+                <AvatarImage
+                  src={user?.profileImage || "/feranmi-avatar.png"}
+                />
                 <AvatarFallback>AI</AvatarFallback>
               </Avatar>
               Chat with Feranmi
@@ -1104,20 +1106,25 @@ const Chatbot = forwardRef<ChatbotRef>((_props, ref) => {
               </Badge>
             </DialogTitle>
             <DialogDescription>
-              Your friendly guide to Freelance Match. Ask about proposals, bids, or gigs!
+              Your friendly guide to Freelance Match. Ask about proposals, bids,
+              or gigs!
             </DialogDescription>
           </DialogHeader>
 
           <ScrollArea className="flex-1 pr-4 my-2">
             <div className="space-y-4 py-2">
               {messages.length === 0 && !isLoading ? (
-                <p className="text-center text-muted-foreground">Start a conversation!</p>
+                <p className="text-center text-muted-foreground">
+                  Start a conversation!
+                </p>
               ) : (
                 messages.map((message) => (
                   <div
                     key={message.id}
                     className={`flex ${
-                      message.sender === "user" ? "justify-end" : "justify-start"
+                      message.sender === "user"
+                        ? "justify-end"
+                        : "justify-start"
                     } gap-2`}
                   >
                     <div
@@ -1134,8 +1141,16 @@ const Chatbot = forwardRef<ChatbotRef>((_props, ref) => {
                           <ReactMarkdown
                             remarkPlugins={[remarkGfm]}
                             components={{
-                              code: ({ node, inline, className, children, ...props }) => {
-                                const match = /language-(\w+)/.exec(className || "");
+                              code: ({
+                                node,
+                                inline,
+                                className,
+                                children,
+                                ...props
+                              }) => {
+                                const match = /language-(\w+)/.exec(
+                                  className || ""
+                                );
                                 return !inline ? (
                                   <pre className="bg-gray-100 p-2 rounded text-xs overflow-x-auto my-1">
                                     <code className={className} {...props}>
@@ -1162,7 +1177,9 @@ const Chatbot = forwardRef<ChatbotRef>((_props, ref) => {
                       </p>
                     </div>
                     <Avatar className="h-6 w-6 self-end">
-                      <AvatarFallback>{message.sender === "user" ? "U" : "AI"}</AvatarFallback>
+                      <AvatarFallback>
+                        {message.sender === "user" ? "U" : "AI"}
+                      </AvatarFallback>
                     </Avatar>
                   </div>
                 ))
@@ -1193,7 +1210,9 @@ const Chatbot = forwardRef<ChatbotRef>((_props, ref) => {
             <Input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSendMessage()} // Fixed: onKeyDown
+              onKeyDown={(e) =>
+                e.key === "Enter" && !e.shiftKey && handleSendMessage()
+              } // Fixed: onKeyDown
               placeholder="Type your message..."
               className="flex-1"
               disabled={isLoading}
